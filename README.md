@@ -21,4 +21,11 @@ An example of an RQ worker ecosystem in Docker
 
     $ fig run action count http://google.com
     
+# View rq-dashboard
+
+Navigate to http://$DOCKER_IP:8000
+
+# View Redmon
+
+Navigate to http://$DOCKER_IP:8888
 
