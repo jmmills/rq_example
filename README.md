@@ -7,18 +7,18 @@ An example of an RQ worker ecosystem in Docker
 
 # Build base image
 
-    docker build -t rq_demo .
+    $ docker build -t rq_demo .
     
 # Build project images
 
-    fig build
+    $ fig build
     
 # Run service stack
 
-    fig up
-    
+    $ fig up
+      
 # Run action
 
-    fig run action count http://google.com
+    $ fig run action count http://google.com
     
 
