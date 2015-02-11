@@ -23,13 +23,13 @@ dashboard:
 
 monitor:
   image: vieux/redmon
-  command: -r tcp://redis:6379
+  command: -r redis://redis:6379
   ports:
     - "8888:4567"
   links:
     - redis
 
-action:
+a:
   image: rq_demo
   links:
     - redis

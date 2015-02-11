@@ -30,6 +30,7 @@ def main():
     args = get_args()
     conn = redis.Redis(host=host)
     worker = rq.Queue(connection=conn)
+    print "Running %s" % (args.action)
     result = worker.enqueue(actions.get(args.action), args.url)
 
     print result

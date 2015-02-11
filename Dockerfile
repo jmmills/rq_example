@@ -1,7 +1,9 @@
 FROM ubuntu:latest
 MAINTAINER Jason Mills <jason.mills@integratelecom.com>
-ADD requirements.txt /
-ADD action.py /
+RUN mkdir /code
+WORKDIR /code
+ADD requirements.txt /code/
+ADD action.py /code/
 RUN apt-get update
 RUN apt-get install -y python-pip 
 RUN pip install -r /requirements.txt
