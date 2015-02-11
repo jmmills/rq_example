@@ -7,14 +7,14 @@ redis:
 
 worker:
   image: rq_demo
-  endpoint: rqworker
+  entrypoint: rqworker
   command: -u tcp://redis
   links:
     - redis
 
 dashboard:
   image: rq_demo
-  endpoint: rq-dashboard
+  entrypoint: rq-dashboard
   command: -p 8000 -u tcp://redis
   ports:
     - "8000:8000"
