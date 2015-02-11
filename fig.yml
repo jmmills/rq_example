@@ -6,13 +6,16 @@ redis:
     - "6379"
 
 worker:
-  build: worker/
+  image: rq_demo
+  endpoint: rqworker
+  command: -u tcp://redis
   links:
     - redis
 
 dashboard:
-  build: dashboard/
-  command: -p 8000 -u $REDIS_PORT
+  image: rq_demo
+  endpoint: rq-dashboard
+  command: -p 8000 -u tcp://redis
   ports:
     - "8000:8000"
   links:

@@ -1,4 +1,5 @@
 redis
 rq
+rq-dashboard
 requests
 argparse
