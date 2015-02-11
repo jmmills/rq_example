@@ -26,3 +26,7 @@ monitor:
   links:
     - redis
 
+action:
+  image: rq_demo
+  links:
+    - redis
