@@ -5,11 +5,12 @@ import hashlib
 from furl import furl
 from elasticsearch import Elasticsearch
 from lxml.cssselect import CSSSelector
+from redis import Redis
 from rq import use_connection, Queue
 
 
 def get_queue():
-    use_connection()
+    use_connection(Redis(host='redis'))
     return Queue()
 
 
@@ -70,8 +71,7 @@ def hash_img(url, href, data):
 
 
 def index_img(url, href, hash):
-    return {"url": url, "href": href, "hash": hash}
-    es = Elasticsearch()
+    es = Elasticsearch('http://192.168.99.102:9200')
     return es.index(
         index='img-index',
         doc_type='indexed_image',

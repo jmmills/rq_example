@@ -6,7 +6,7 @@ redis:
     - "6379"
 
 elasticsearch:
-  image: devdb/kibana
+  image: elasticsearch
   ports:
     - 5601:5601
     - 9200:9200
@@ -14,7 +14,7 @@ elasticsearch:
 scheduler:
   image: rq_demo
   entrypoint: rqscheduler
-  command: -h redis
+  command: --host redis
   links:
     - redis
 
@@ -24,6 +24,7 @@ worker:
   command: -u tcp://redis
   links:
     - redis
+    - elasticsearch
 
 dashboard:
   image: rq_demo
