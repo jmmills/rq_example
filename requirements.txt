@@ -1,5 +1,10 @@
+furl
 redis
 rq
 rq-dashboard
+rq-scheduler
 requests
 argparse
+lxml
+cssselect
+elasticsearch

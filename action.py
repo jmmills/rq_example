@@ -3,16 +3,25 @@ import sys
 import requests
 import argparse
 import redis
-import rq
+from worker import count_words_at_url, index
+from rq import use_connection, Queue
+from rq.job import Job
 
 
-def count_words_at_url(url):
-    resp = requests.get(url)
-    return len(resp.text.split())
+def wait_for_job(job_id):
+    job = Job().fetch(job_id)
+
+    while job.result is None:
+        pass
+
+    if type(job.result) is int:
+        wait_for_job(job.result)
+    else:
+        return job.result
 
 
 host = 'redis'
-actions = {'count': count_words_at_url}
+actions = { 'count': wait_for_count, 'index': index }
 
 
 def get_args():
@@ -28,12 +37,17 @@ def get_args():
 
 def main():
     args = get_args()
-    conn = redis.Redis(host=host)
-    worker = rq.Queue(connection=conn)
-    print "Running %s" % (args.action)
-    result = worker.enqueue(actions.get(args.action), args.url)
+    conn = redis.Redis()
 
-    print result
+    use_connection(conn)
+
+    worker = Queue()
+
+    print "Running %s" % (args.action)
+
+    job = worker.enqueue(actions.get(args.action), args.url)
+
+    print wait_for_job(job.id)
 
 
 if __name__ == '__main__':

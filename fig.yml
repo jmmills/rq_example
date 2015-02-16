@@ -5,6 +5,19 @@ redis:
   expose:
     - "6379"
 
+elasticsearch:
+  image: devdb/kibana
+  ports:
+    - 5601:5601
+    - 9200:9200
+
+scheduler:
+  image: rq_demo
+  entrypoint: rqscheduler
+  command: -h redis
+  links:
+    - redis
+
 worker:
   image: rq_demo
   entrypoint: rqworker
@@ -29,7 +42,3 @@ monitor:
   links:
     - redis
 
-a:
-  image: rq_demo
-  links:
-    - redis
