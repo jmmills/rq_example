@@ -4,8 +4,10 @@ import requests
 import argparse
 import redis
 from worker import count_words_at_url, index
+from rq_scheduler import Scheduler
 from rq import use_connection, Queue
 from rq.job import Job
+from datetime import datetime
 
 
 def wait_for_job(job_id, conn):
@@ -14,7 +16,7 @@ def wait_for_job(job_id, conn):
     print type(job.result)
 
     while job.result is None:
-        pass
+        print "Waiting for job %s results" % (job.id)
 
     if type(job.result) is not dict:
         return wait_for_job(job.result, conn)
@@ -46,9 +48,18 @@ def main():
 
     print "Running %s from %s redis" % (args.action, args.server)
 
-    job = worker.enqueue(actions.get(args.action), args.url)
-
-    print wait_for_job(job.id, conn)
+    if args.action == 'index':
+        scheduler = Scheduler(connection=conn)
+        print scheduler.schedule(
+            scheduled_time=datetime.now(),
+            func=actions.get(args.action),
+            args=[args.url],
+            interval=60,
+            repeat=None
+        )
+    else:
+        job = worker.enqueue(actions.get(args.action), args.url)
+        print wait_for_job(job.id, conn)
 
 
 if __name__ == '__main__':

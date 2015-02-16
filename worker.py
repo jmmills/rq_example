@@ -44,7 +44,6 @@ def sel_img(url, html):
     sel = CSSSelector('img')
     q = get_queue()
     results = [q.enqueue(get_img, url, make_img_url(url, m.get('src'))) for m in sel(tree)]
-    print results
     return results
 
 
@@ -52,7 +51,6 @@ def make_img_url(url, path):
     u = furl(url)
     u.path = path
     as_string = "%s" % (u)
-    print as_string
     return as_string
 
 
@@ -60,13 +58,11 @@ def get_img(url, href):
     r = requests.get(href)
     r.raise_for_status()
     job = get_queue().enqueue(hash_img, url, href, r.content)
-    print job
     return job.id
 
 
 def hash_img(url, href, data):
     job = get_queue().enqueue(index_img, url, href, hashlib.sha1(data).hexdigest())
-    print job
     return job.id
 
 
