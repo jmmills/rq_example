@@ -15,7 +15,7 @@ elasticsearch:
 scheduler:
   image: rq_demo
   entrypoint: rqscheduler
-  command: --host redis -v
+  command: --host redis
   links:
     - redis
 
