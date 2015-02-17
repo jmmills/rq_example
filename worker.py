@@ -1,12 +1,13 @@
-import sys
-import lxml.html
 import requests
-import hashlib
+import lxml.html
+
+from redis import Redis
+from rq import use_connection, Queue
+
+from hashlib import sha1
 from furl import furl
 from elasticsearch import Elasticsearch
 from lxml.cssselect import CSSSelector
-from redis import Redis
-from rq import use_connection, Queue
 
 
 def get_queue():
@@ -62,7 +63,7 @@ def get_img(url, href):
 
 
 def hash_img(url, href, data):
-    job = get_queue().enqueue(index_img, url, href, hashlib.sha1(data).hexdigest())
+    job = get_queue().enqueue(index_img, url, href, sha1(data).hexdigest())
     return job.id
 
 
