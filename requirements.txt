@@ -1,11 +1,11 @@
-shovel
+argparse
+cssselect
+elasticsearch
 furl
+lxml
 redis
+requests
 rq
 rq-dashboard
 rq-scheduler
-requests
-argparse
-lxml
-cssselect
-elasticsearch
+shovel
