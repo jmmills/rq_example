@@ -12,9 +12,9 @@ RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r /code/requirements.txt
-ADD action.py /code/
+ADD shovel.py /code/
 ADD worker.py /code/
 
-ENTRYPOINT ["python", "action.py"]
-CMD ["-h"]
+ENTRYPOINT ["shovel"]
+CMD ["help"]
 

@@ -5,7 +5,9 @@ up: base
 
 clean:
 	fig stop
-	fig rm
+	fig rm --force
+
+distclean: clean
 	docker rmi rq_demo
 	rm -rfv .virtualenv
 

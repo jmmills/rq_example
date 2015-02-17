@@ -57,9 +57,20 @@ def make_img_url(url, path):
 
 def get_img(url, href):
     r = requests.get(href)
-    r.raise_for_status()
-    job = get_queue().enqueue(hash_img, url, href, r.content)
+
+    if r.status_code == 200:
+        job = get_queue().enqueue(hash_img, url, href, r.content)
+    else:
+        job = get_queue().enqueue(index_img_error, url, href, r)
+
     return job.id
+
+
+def index_img_error(url, href, r):
+    return send_to_es(url, href, {
+        'status': r.status_code,
+        'reason': r.reason
+    })
 
 
 def hash_img(url, href, data):
@@ -68,10 +79,15 @@ def hash_img(url, href, data):
 
 
 def index_img(url, href, hash):
-    es = Elasticsearch('http://192.168.99.102:9200')
+    return send_to_es(url, href, {"url": url, "href": href, "hash": hash})
+
+
+def send_to_es(url, href, data):
+    es = Elasticsearch('http://elasticsearch:9200')
     return es.index(
         index='img-index',
         doc_type='indexed_image',
-        body={"url": url, "href": href, "hash": hash}
+        body={"url": url, "href": href, "hash": data}
     )
+
 

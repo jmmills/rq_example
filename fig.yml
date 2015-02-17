@@ -44,3 +44,7 @@ monitor:
   links:
     - redis
 
+go:
+  image: rq_demo
+  links:
+    - redis

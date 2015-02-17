@@ -11,7 +11,9 @@ from worker import count_words_at_url, echo, index
 
 
 @task
-def add(do='count',  redis='localhost', with_input=None):
+def add(do='count',  redis='redis', with_input=None):
+    '''Add an action into the worker queue'''
+
     conn = Redis(host=redis)
 
     def queue_it(func, i):
@@ -30,7 +32,7 @@ def add(do='count',  redis='localhost', with_input=None):
             scheduled_time=datetime.now(),
             func=index,
             args=[x],
-            interval=60,
+            interval=10,
             repeat=None
         )
 
