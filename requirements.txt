@@ -3,8 +3,10 @@ cssselect
 elasticsearch
 furl
 lxml
+nose
 redis
 requests
+rom
 rq
 rq-dashboard
 rq-scheduler
