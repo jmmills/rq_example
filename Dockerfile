@@ -2,10 +2,11 @@ FROM ubuntu:latest
 MAINTAINER Jason Mills <jason.mills@integratelecom.com>
 RUN apt-get update
 RUN apt-get install -y \
-    python-pip \
-    python-dev \
+    git \
     libxml2-dev \
     libxslt1-dev \
+    python-pip \
+    python-dev \
     zlib1g-dev
 
 RUN mkdir /code

@@ -1,7 +1,15 @@
 .phony: clean
 
-up: base
+up: build 
 	fig up
+
+
+reup: build
+	fig stop
+	fig start
+    
+build: base
+	fig build
 
 clean:
 	fig stop
@@ -17,3 +25,6 @@ base:
 env:
 	virtualenv .virtualenv
 	source .virtualenv/bin/activate && pip install -U -r requirements.txt
+
+sandbox: base
+	docker run --rm -it --entrypoint=/bin/bash rq_demo -l

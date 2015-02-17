@@ -7,19 +7,37 @@ An example of an RQ worker ecosystem in Docker
 
 # Build base image
 
-    $ docker build -t rq_demo .
+    $ make base
     
 # Build project images
 
-    $ fig build
+    $ make build
     
 # Run service stack
 
-    $ fig up
-      
-# Run action
+    $ make up
 
-    $ fig run action count http://google.com
+# Install python deps locally
+
+    $ make env
+
+# Add url to indexer
+
+    $ fig run a index --on http://localhost
+
+# To see containers running
+
+    $ fig ps
+    
+# To add more workers
+
+    $ fig scale worker=2
+    
+# Deploy to remote docker server 
+
+TLS is recommended and that you follow documented docker best practices
+
+    $ DOCKER_HOST=tcp://$remote_server:2375 make up
     
 # View rq-dashboard
 
@@ -28,4 +46,8 @@ Navigate to http://$DOCKER_IP:8000
 # View Redmon
 
 Navigate to http://$DOCKER_IP:8888
+
+# View ElasticSearch index w/ query tool
+
+Navigate to http://$DOCKER_IP:9200/_plugin/head
 

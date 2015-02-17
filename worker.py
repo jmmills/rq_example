@@ -6,6 +6,7 @@ from rq import use_connection, Queue
 
 from hashlib import sha1
 from furl import furl
+from datetime import datetime
 from elasticsearch import Elasticsearch
 from lxml.cssselect import CSSSelector
 
@@ -19,14 +20,9 @@ def echo(stuff):
     return stuff
 
 
-def count_text(text):
-    return {'data': len(text.split())}
-
-
 def count_words_at_url(url):
     r = requests.get(url)
-    job = get_queue().enqueue(count_text, r.text)
-    return job.id
+    return len(r.text.split())
 
 
 def index(url):
@@ -49,10 +45,8 @@ def sel_img(url, html):
 
 
 def make_img_url(url, path):
-    u = furl(url)
-    u.path = path
-    as_string = "%s" % (u)
-    return as_string
+    u = furl(path)
+    return furl(url).set(path=path).url if u.scheme is None else u.url
 
 
 def get_img(url, href):
@@ -91,3 +85,5 @@ def send_to_es(url, href, data):
     )
 
 
+def date(x):
+    return datetime.now()
