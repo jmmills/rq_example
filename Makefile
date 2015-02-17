@@ -14,6 +14,7 @@ build: base
 clean:
 	fig stop
 	fig rm --force
+	rm -v *.pyc
 
 distclean: clean
 	docker rmi rq_demo
